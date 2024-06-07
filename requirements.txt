@@ -1,0 +1,9 @@
+pandas
+dash
+plotly
+apscheduler
+scheduler
+schedule
+dash_bootstrap_components
+dash-bootstrap-templates
+aiohttp

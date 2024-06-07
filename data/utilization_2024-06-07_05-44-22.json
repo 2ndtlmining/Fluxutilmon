@@ -1,0 +1,18 @@
+{
+    "Snapshot": "2024-06-07_05-44-22",
+    "totalbenchmarkcores": 100097,
+    "totalbenchmarkram": 255890.90000000002,
+    "totalbenchmarkssd": 6622963.94,
+    "totalutilcores": 19235.1,
+    "totalutilram": 26517.9,
+    "totalutilssd": 543394,
+    "notutilizednodes": 5004,
+    "totalnodes": 12728,
+    "utilization_percentage_cores": 19.216460033767245,
+    "utilization_percentage_ram": 10.362971094321837,
+    "utilization_percentage_ssd": 8.204695132312617,
+    "utilization_nodes": 60.68510370835952,
+    "total_cumulus": 8761,
+    "total_nimbus": 1992,
+    "total_stratus": 1975
+}

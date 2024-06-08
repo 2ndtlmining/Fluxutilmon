@@ -170,6 +170,7 @@ def check_snapshots():
         if check_snapshot_age(latest_util_file):
             print("Snapshot is older than 5 minutes, running apidata.py")
             run_apidata()
+            generate_utilization_dataframe()  # Reload the utilization dataframe
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
     else:
@@ -179,6 +180,7 @@ def check_snapshots():
         if check_snapshot_age(latest_docker_file):
             print("Snapshot is older than 5 minutes, running count_docker.py")
             run_dockerdata()
+            generate_docker_dataframe()  # Reload the docker dataframe
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
     else:

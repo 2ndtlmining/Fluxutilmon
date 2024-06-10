@@ -163,6 +163,7 @@ def run_dockerdata():
 
 
 def check_snapshots():
+    print("Checking snapshots....")
     latest_util_file = find_latest_util_json_file()
     latest_docker_file = find_latest_docker_json_file()
 
@@ -202,8 +203,6 @@ def main():
         # Start the Dash app
     app.run_server(host='0.0.0.0', port=8049, debug=True)
 
-    # Schedule the check for every hour
-    schedule.every(1).hours.do(check_snapshots)
 
     # Keep the program running
     while True:
@@ -214,8 +213,7 @@ def main():
         print("Latest files are: ", latest_util_file, latest_docker_file)
 
         # Wait for the next hour
-        schedule.run_pending()
-        time.sleep(3600)
+        time.sleep(3600 - time.time() % 3600)
 
 
 docker_df = generate_docker_dataframe()

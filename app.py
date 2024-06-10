@@ -68,8 +68,6 @@ def generate_utilization_dataframe():
     return df
 
 
-
-# Generate Total Docker count data
 def create_dataframe_and_figure():
     # Get all cleaned_data.json files in the data directory
     print("Generating dataframes process started...")
@@ -91,6 +89,9 @@ def create_dataframe_and_figure():
 
         # Append the data to the existing DataFrame
         df = df._append({'Snapshot Date': snapshot_date, 'Total Docker Count': total_docker_count}, ignore_index=True)
+
+    # Sort the DataFrame by 'Snapshot Date' in ascending order
+    df = df.sort_values('Snapshot Date')
 
     # Print the DataFrame
     print(df)

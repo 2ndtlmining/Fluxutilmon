@@ -259,6 +259,7 @@ def update_util_chart(selected_metric):
     if isinstance(selected_metric, list):
         selected_metric = selected_metric[0]
     filtered_df = utilization_df[utilization_df['Metric'] == selected_metric]
+    filtered_df = filtered_df.sort_values('Snapshot') # sort by Snapshot in ascending order
     Utilfig = px.line(filtered_df, x='Snapshot', y='Value', markers=True, template='plotly_dark')
     Utilfig.update_layout(title='Utilization', xaxis_title='Snapshot', yaxis_title=selected_metric)
     return Utilfig

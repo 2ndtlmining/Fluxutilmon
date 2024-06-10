@@ -269,7 +269,6 @@ def update_util_chart(selected_metric):
     Output('line-chart', 'figure'),
     [Input('docker-dropdown', 'value')]
 )
-
 def update_line_chart(selected_docker_name):
     if len(selected_docker_name) == 0:
         raise ValueError("No Docker Name selected")
@@ -279,7 +278,10 @@ def update_line_chart(selected_docker_name):
     
     # Filter the docker_df based on the selected Docker Name
     filtered_df = docker_df[docker_df['Docker Name'].isin(selected_docker_name)]
-
+    
+    # Sort the filtered_df by 'Snapshot' in ascending order
+    filtered_df = filtered_df.sort_values('Snapshot')
+    
     # Create the line graph using Plotly
     fig = px.line(filtered_df, x='Snapshot', y='Quantity', markers=True, template='plotly_dark')
     fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity')

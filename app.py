@@ -177,6 +177,7 @@ def check_snapshots():
             print("Snapshot is not old enough, no new snapshot will be taken")
     else:
         print("No latest file found, sleeping for 1 hour...")
+        print("Scheduler will check again in 1 hour")
 
     if latest_docker_file:
         if check_snapshot_age(latest_docker_file):
@@ -187,6 +188,7 @@ def check_snapshots():
             print("Snapshot is not old enough, no new snapshot will be taken")
     else:
         print("No latest file found, sleeping for 1 hour...")
+        print("Scheduler will check again in 1 hour")
 
 
 # Create a scheduler instance
@@ -215,7 +217,9 @@ def main():
 
     # Keep the program running
     while True:
+        print("Scheduler is running. Next check in 1 hour...")
         time.sleep(1)
+        
 
 docker_df = generate_docker_dataframe()
 dockertotal_df, fig = create_dataframe_and_figure()

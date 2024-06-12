@@ -8,8 +8,10 @@ from dash import Dash, html, dcc, callback, Output, Input
 from dash_bootstrap_templates import load_figure_template
 from apscheduler.schedulers.background import BackgroundScheduler
 import scheduler, schedule
+import logging
 
 load_figure_template(["cyborg", "darkly"])
+logging.basicConfig(level=logging.DEBUG)
 
 # Dash app
 app = Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP, dbc.themes.DARKLY])
@@ -164,7 +166,7 @@ def run_dockerdata():
 
 
 def check_snapshots():
-    print("Checking snapshots....")
+    print("Checking snapshots....", flush=True)
     latest_util_file = find_latest_util_json_file()
     latest_docker_file = find_latest_docker_json_file()
 

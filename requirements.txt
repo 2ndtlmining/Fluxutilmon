@@ -7,3 +7,4 @@ schedule
 dash_bootstrap_components
 dash-bootstrap-templates
 aiohttp
+logging

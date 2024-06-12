@@ -106,6 +106,7 @@ def create_dataframe_and_figure():
 
 def find_latest_util_json_file():
     # Find the latest JSON file starting with "utilization"
+    logging.info("Checking latest utilization file....")
     latest_util_file = None
     latest_time = 0
     for filename in os.listdir('data'):
@@ -115,10 +116,11 @@ def find_latest_util_json_file():
             if file_time > latest_time:
                 latest_util_file = filename
                 latest_time = file_time
-
+    logging.info(f"Latest utilization file: {latest_util_file}")
     return latest_util_file
 
 def find_latest_docker_json_file():
+    logging.info("Checking latest docker file....")
     # Find the latest JSON file starting with "utilization"
     latest_docker_file = None
     latest_time = 0
@@ -129,11 +131,12 @@ def find_latest_docker_json_file():
             if file_time > latest_time:
                 latest_docker_file = filename
                 latest_time = file_time
-
+    logging.info(f"Latest docker file: {latest_docker_file}")
     return latest_docker_file
 
 def check_snapshot_age(json_file):
     # Read the JSON file
+    logging.info(f"Checking snapshot age: {json_file}")
     file_path = os.path.join('data', json_file)
     with open(file_path, "r") as f:
         data = json.load(f)
@@ -148,20 +151,24 @@ def check_snapshot_age(json_file):
         print ("Snapshot date: %s, Current time: %s, Snapshot time: %s" % (snapshot_date, current_time, snapshot_time))
         if current_time - snapshot_time > 720 * 60:
             print("Snapshot is older than 12 hours")
+            logging.info("Snapshot is older than 12 hours")
             return True
         else:
             print("Last snapshot is still current no need to take snapshot")
+            logging.info("Last snapshot is still current no need to take snapshot")
 
     return False
 
 def run_apidata():
     # Run apidata.py to create a new snapshot
+    logging.info("Running apidata.py....")
     print("Running apidata.py....")
     subprocess.run(["python3", "apidata.py"])
 
 def run_dockerdata():
     # Run apidata.py to create a new snapshot
     print("Running count_docker.py....")
+    logging.info("Running count_docker.py....")
     subprocess.run(["python3", "count_docker.py"])
 
 
@@ -174,23 +181,30 @@ def check_snapshots():
     if latest_util_file:
         if check_snapshot_age(latest_util_file):
             print("Snapshot is older than 5 minutes, running apidata.py")
+            logging.info("Snapshot is older than 5 minutes, running apidata.py")
             run_apidata()
             generate_utilization_dataframe()  # Reload the utilization dataframe
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
+            logging.info("Snapshot is not old enough, no new snapshot will be taken")
     else:
         print("No latest file found, sleeping for 1 hour...")
+        logging.info("No latest file found, sleeping for 1 hour...")
         print("Scheduler will check again in 1 hour")
+        logging.info("Scheduler will check again in 1 hour")
 
     if latest_docker_file:
         if check_snapshot_age(latest_docker_file):
             print("Snapshot is older than 5 minutes, running count_docker.py")
+            logging.info("Snapshot is older than 5 minutes, running count_docker.py")
             run_dockerdata()
             generate_docker_dataframe()  # Reload the docker dataframe
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
+            logging.info("Snapshot is not old enough, no new snapshot will be taken")
     else:
         print("No latest file found, sleeping for 1 hour...")
+        logging.info("No latest file found, sleeping for 1 hour...")
         print("Scheduler will check again in 1 hour")
 
 
@@ -270,6 +284,7 @@ def update_util_chart(selected_metric):
     filtered_df = filtered_df.sort_values('Snapshot') # sort by Snapshot in ascending order
     Utilfig = px.line(filtered_df, x='Snapshot', y='Value', markers=True, template='plotly_dark')
     Utilfig.update_layout(title='Utilization', xaxis_title='Snapshot', yaxis_title=selected_metric)
+    logging.info("Utilization chart updated")
     return Utilfig
 
 
@@ -293,7 +308,7 @@ def update_line_chart(selected_docker_name):
     # Create the line graph using Plotly
     fig = px.line(filtered_df, x='Snapshot', y='Quantity', markers=True, template='plotly_dark')
     fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity')
-
+    logging.info("Line chart updated")
     return fig
 
 

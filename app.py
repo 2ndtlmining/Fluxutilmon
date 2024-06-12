@@ -201,21 +201,21 @@ check_snapshots()
 
 
 def main():
-        # Start the Dash app
+    # Start the Dash app
     app.run_server(host='0.0.0.0', port=8049, debug=True)
 
+    # Create a scheduler instance
+    scheduler = BackgroundScheduler()
+
+    # Schedule the check_snapshots() function to run every hour
+    scheduler.add_job(check_snapshots, 'interval', hours=1)
+
+    # Start the scheduler
+    scheduler.start()
 
     # Keep the program running
     while True:
-        # Check for the latest Docker files
-        check_snapshots()
-        latest_util_file = find_latest_util_json_file()
-        latest_docker_file = find_latest_docker_json_file()
-        print("Latest files are: ", latest_util_file, latest_docker_file)
-
-        # Wait for the next hour
-        time.sleep(3600 - time.time() % 3600)
-
+        time.sleep(1)
 
 docker_df = generate_docker_dataframe()
 dockertotal_df, fig = create_dataframe_and_figure()

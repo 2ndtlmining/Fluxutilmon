@@ -235,7 +235,9 @@ def main():
     # Keep the program running
     while True:
         print("Scheduler is running. Next check in 1 hour...")
-        time.sleep(1)
+        logging.info("Scheduler is running. Next check in 1 hour...")
+        check_snapshots()
+        time.sleep(3600)
         
 
 docker_df = generate_docker_dataframe()

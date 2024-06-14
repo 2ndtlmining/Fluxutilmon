@@ -242,6 +242,8 @@ def main():
         # Define the function to be executed in the loop
     def loop_function():
         while True:
+            print("Loop is running...")
+            logging.info("Loop is running...")
             current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             print(f"Scheduler is running. Current time: {current_time}")
             logging.info(f"Scheduler is running. Current time: {current_time}")

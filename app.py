@@ -109,7 +109,7 @@ def create_dataframe_and_figure():
 
     # Print the DataFrame
     print(df)
-    logging.info(df.to_string())
+    logging.info("The docker dataframes process completed...")
 
     # Create the line graph using px.line
     fig = px.line(df, x='Snapshot Date', y='Total Docker Count', title='Total Docker Count Over Time')

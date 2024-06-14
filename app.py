@@ -51,7 +51,7 @@ def generate_docker_dataframe():
 
     # Print the DataFrame
     print(df)
-    logging.info(df.to_string())
+    logging.info("Docker count dataframes process completed...")
     return df
 
 # Generate Utilization Dataframe
@@ -76,7 +76,7 @@ def generate_utilization_dataframe():
             # Append the data to the existing DataFrame
             df = df._append(data_list, ignore_index=True)
 
-    logging.info(df.to_string())
+    logging.info("Utilization dataframes process completed...")
     return df
 
 
@@ -243,6 +243,7 @@ def main():
         print(f"Scheduler is running. Current time: {current_time}")
         logging.info(f"Scheduler is running. Current time: {current_time}")
         check_snapshots()
+        logging.info("Snapshot check completed, sleeping for 1 hour")
         time.sleep(3600)
         
 

@@ -10,6 +10,12 @@ import logging
 import datetime
 
 load_figure_template(["cyborg", "darkly"])
+
+# Clear the log file
+if os.path.exists('app.log'):
+    os.remove('app.log')
+
+# Configure logging 
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
 # Dash app
@@ -19,10 +25,12 @@ app = Dash(__name__, external_stylesheets = [dbc.themes.BOOTSTRAP, dbc.themes.DA
 def generate_docker_dataframe():
     # Get all cleaned_data.json files in the data directory
     print("Generating dataframes process started...")
+    logging.info("Generating Docker count dataframes process started...")
     docker_files = glob.glob(os.path.join('data', 'docker*.json'))
 
     # Print the cleaned data files
     print(f"Cleaned data files read into report: {docker_files}")
+    logging.info(f"Cleaned data files read into report: {docker_files}")
 
     # Initialize empty dataframes
     df = pd.DataFrame()
@@ -43,11 +51,13 @@ def generate_docker_dataframe():
 
     # Print the DataFrame
     print(df)
+    logging.info(df.to_string())
     return df
 
 # Generate Utilization Dataframe
 def generate_utilization_dataframe():
     # Get all docker*.json files in the data directory
+    logging.info("Generating Utilization dataframes process started...")
     docker_files = glob.glob(os.path.join('data', 'utilization*.json'))
 
     # Initialize empty dataframes
@@ -66,16 +76,19 @@ def generate_utilization_dataframe():
             # Append the data to the existing DataFrame
             df = df._append(data_list, ignore_index=True)
 
+    logging.info(df.to_string())
     return df
 
 
 def create_dataframe_and_figure():
     # Get all cleaned_data.json files in the data directory
     print("Generating dataframes process started...")
+    logging.info("Generating dataframes process started...")
     docker_files = glob.glob(os.path.join('data', 'docker*.json'))
 
     # Print the cleaned data files
     print(f"Cleaned data files read into report: {docker_files}")
+    logging.info(f"Cleaned data files read into report: {docker_files}")
 
     # Initialize empty dataframes
     df = pd.DataFrame(columns=['Snapshot Date', 'Total Docker Count'])
@@ -96,6 +109,7 @@ def create_dataframe_and_figure():
 
     # Print the DataFrame
     print(df)
+    logging.info(df.to_string())
 
     # Create the line graph using px.line
     fig = px.line(df, x='Snapshot Date', y='Total Docker Count', title='Total Docker Count Over Time')
@@ -147,6 +161,7 @@ def check_snapshot_age(json_file):
         snapshot_time = time.mktime(time.strptime(snapshot_date, "%Y-%m-%d_%H-%M-%S"))
         current_time = time.time()
         print("Checking snapshot age...")
+        logging.info("Checking snapshot age...")
         print ("Snapshot date: %s, Current time: %s, Snapshot time: %s" % (snapshot_date, current_time, snapshot_time))
         if current_time - snapshot_time > 720 * 60:
             print("Snapshot is older than 12 hours")
@@ -163,12 +178,14 @@ def run_apidata():
     logging.info("Running apidata.py....")
     print("Running apidata.py....")
     subprocess.run(["python3", "apidata.py"])
+    logging.info("apidata.py completed")
 
 def run_dockerdata():
     # Run apidata.py to create a new snapshot
     print("Running count_docker.py....")
     logging.info("Running count_docker.py....")
     subprocess.run(["python3", "count_docker.py"])
+    logging.info("count_docker.py completed")
 
 
 def check_snapshots():

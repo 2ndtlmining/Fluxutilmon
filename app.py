@@ -8,6 +8,7 @@ from dash import Dash, html, dcc, callback, Output, Input
 from dash_bootstrap_templates import load_figure_template
 import logging
 import datetime
+import threading
 
 load_figure_template(["cyborg", "darkly"])
 
@@ -238,14 +239,25 @@ def main():
     app.run_server(host='0.0.0.0', port=8049, debug=True)
 
     # Keep the program running
+        # Define the function to be executed in the loop
+    def loop_function():
+        while True:
+            current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            print(f"Scheduler is running. Current time: {current_time}")
+            logging.info(f"Scheduler is running. Current time: {current_time}")
+            check_snapshots()
+            logging.info("Snapshot check completed, sleeping for 1 hour")
+            time.sleep(3600)
+
+    # Start the loop function in a separate thread
+    loop_thread = threading.Thread(target=loop_function)
+    loop_thread.start()
+
+    # Keep the main thread running
     while True:
-        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print(f"Scheduler is running. Current time: {current_time}")
-        logging.info(f"Scheduler is running. Current time: {current_time}")
-        check_snapshots()
-        logging.info("Snapshot check completed, sleeping for 1 hour")
-        time.sleep(3600)
-        
+        time.sleep(1)
+
+
 
 docker_df = generate_docker_dataframe()
 dockertotal_df, fig = create_dataframe_and_figure()

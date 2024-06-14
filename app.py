@@ -9,6 +9,7 @@ from dash_bootstrap_templates import load_figure_template
 from apscheduler.schedulers.background import BackgroundScheduler
 import scheduler, schedule
 import logging
+import datetime
 
 load_figure_template(["cyborg", "darkly"])
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
@@ -234,8 +235,9 @@ def main():
 
     # Keep the program running
     while True:
-        print("Scheduler is running. Next check in 1 hour...")
-        logging.info("Scheduler is running. Next check in 1 hour...")
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(f"Scheduler is running. Current time: {current_time}")
+        logging.info(f"Scheduler is running. Current time: {current_time}")
         check_snapshots()
         time.sleep(3600)
         

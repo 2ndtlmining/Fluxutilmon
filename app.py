@@ -6,8 +6,6 @@ import plotly.express as px
 import dash_bootstrap_components as dbc
 from dash import Dash, html, dcc, callback, Output, Input
 from dash_bootstrap_templates import load_figure_template
-from apscheduler.schedulers.background import BackgroundScheduler
-import scheduler, schedule
 import logging
 import datetime
 
@@ -184,7 +182,9 @@ def check_snapshots():
             print("Snapshot is older than 5 minutes, running apidata.py")
             logging.info("Snapshot is older than 5 minutes, running apidata.py")
             run_apidata()
+            logging.info("Run_APIData.py completed, generating new utilization dataframe")
             generate_utilization_dataframe()  # Reload the utilization dataframe
+            logging.info("Utilization dataframe reloaded")
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
             logging.info("Snapshot is not old enough, no new snapshot will be taken")
@@ -199,7 +199,9 @@ def check_snapshots():
             print("Snapshot is older than 5 minutes, running count_docker.py")
             logging.info("Snapshot is older than 5 minutes, running count_docker.py")
             run_dockerdata()
+            logging.info("Run_DockerData.py completed, generating new docker dataframe")
             generate_docker_dataframe()  # Reload the docker dataframe
+            logging.info("Docker dataframe reloaded")
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
             logging.info("Snapshot is not old enough, no new snapshot will be taken")
@@ -209,12 +211,6 @@ def check_snapshots():
         print("Scheduler will check again in 1 hour")
 
 
-# Create a scheduler instance
-scheduler = BackgroundScheduler()
-
-# Start the scheduler
-scheduler.start()
-
 # Check snapshots immediately
 check_snapshots()
 
@@ -223,15 +219,6 @@ check_snapshots()
 def main():
     # Start the Dash app
     app.run_server(host='0.0.0.0', port=8049, debug=True)
-
-    # Create a scheduler instance
-    scheduler = BackgroundScheduler()
-
-    # Schedule the check_snapshots() function to run every hour
-    scheduler.add_job(check_snapshots, 'interval', hours=1)
-
-    # Start the scheduler
-    scheduler.start()
 
     # Keep the program running
     while True:

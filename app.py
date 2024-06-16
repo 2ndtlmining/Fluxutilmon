@@ -9,6 +9,7 @@ from dash_bootstrap_templates import load_figure_template
 import logging
 import datetime
 import threading
+import schedule
 
 load_figure_template(["cyborg", "darkly"])
 
@@ -237,27 +238,20 @@ check_snapshots()
 def main():
     # Start the Dash app
     app.run_server(host='0.0.0.0', port=8049, debug=True)
+    print("App started...")
+    logging.info("App started...")
 
-    # Keep the program running
-        # Define the function to be executed in the loop
-    def loop_function():
-        while True:
-            print("Loop is running...")
-            logging.info("Loop is running...")
-            current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            print(f"Scheduler is running. Current time: {current_time}")
-            logging.info(f"Scheduler is running. Current time: {current_time}")
-            check_snapshots()
-            logging.info("Snapshot check completed, sleeping for 1 hour")
-            time.sleep(3600)
 
-    # Start the loop function in a separate thread
-    loop_thread = threading.Thread(target=loop_function)
-    loop_thread.start()
-
-    # Keep the main thread running
+    # Schedule the snapshot check to run every 1 hour
+    schedule.every(1).hours.do(check_snapshots)
+    # Keep the program running and check for snapshots at scheduled intervals
     while True:
-        time.sleep(1)
+        schedule.run_pending()
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        print(f"Current time: {current_time}")
+        logging.info(f"Snapshot check scheduled at {current_time}")
+        print("Main loop sleeping for 60 seconds...")
+        time.sleep(60)
 
 
 

@@ -166,8 +166,8 @@ def check_snapshot_age(json_file):
         logging.info("Checking snapshot age...")
         print ("Snapshot date: %s, Current time: %s, Snapshot time: %s" % (snapshot_date, current_time, snapshot_time))
         if current_time - snapshot_time > 720 * 60:
-            print("Snapshot is older than 12 hours")
-            logging.info("Snapshot is older than 12 hours")
+            print("Snapshot is older than 24 hours")
+            logging.info("Snapshot is older than 24 hours")
             return True
         else:
             print("Last snapshot is still current no need to take snapshot")

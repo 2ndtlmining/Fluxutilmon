@@ -151,7 +151,9 @@ async def main():
     print(f'Unique Wallet IDs: {unique_wallet_count}')
 
 # Create and run the event loop
-loop = asyncio.get_event_loop()
+# Create and run the event loop
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 try:
     loop.run_until_complete(main())
 finally:

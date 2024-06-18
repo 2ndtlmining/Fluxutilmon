@@ -245,13 +245,25 @@ def main():
     # Schedule the snapshot check to run every 1 hour
     schedule.every(1).hours.do(check_snapshots)
     # Keep the program running and check for snapshots at scheduled intervals
+    last_snapshot_check_time = None
+
     while True:
         schedule.run_pending()
         current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         print(f"Current time: {current_time}")
         logging.info(f"Snapshot check scheduled at {current_time}")
-        print("Main loop sleeping for 60 seconds...")
-        time.sleep(60)
+    
+        if schedule.jobs:
+            last_snapshot_check_time = current_time
+            print("Main loop sleeping for 60 seconds...")
+            time.sleep(60)
+        else:
+            if last_snapshot_check_time:
+                print(f"Last snapshot check time: {last_snapshot_check_time}")
+                print("No scheduled tasks, sleeping for 60 seconds...")
+            else:
+                print("No snapshot check has run yet.")
+                time.sleep(60)
 
 
 

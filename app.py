@@ -256,14 +256,14 @@ def main():
         if schedule.jobs:
             last_snapshot_check_time = current_time
             print("Main loop sleeping for 60 seconds...")
-            time.sleep(60)
+            time.sleep(120)
         else:
             if last_snapshot_check_time:
                 print(f"Last snapshot check time: {last_snapshot_check_time}")
                 print("No scheduled tasks, sleeping for 60 seconds...")
             else:
                 print("No snapshot check has run yet.")
-                time.sleep(60)
+                time.sleep(120)
 
 
 

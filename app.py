@@ -10,6 +10,7 @@ import logging
 import datetime
 import threading
 import schedule
+from concurrent.futures import ThreadPoolExecutor
 
 load_figure_template(["cyborg", "darkly"])
 
@@ -233,37 +234,20 @@ def check_snapshots():
 # Check snapshots immediately
 check_snapshots()
 
+def run_scheduler():
+    while True:
+        print("Running scheduler...")
+        logging.info("Running scheduler...")
+        check_snapshots()
+        time.sleep(60 * 60)  # Sleep for 1 hour
 
+scheduler_thread = ThreadPoolExecutor().submit(run_scheduler)
 
 def main():
     # Start the Dash app
     app.run_server(host='0.0.0.0', port=8049, debug=True)
     print("App started...")
     logging.info("App started...")
-
-
-    # Schedule the snapshot check to run every 1 hour
-    schedule.every(1).hours.do(check_snapshots)
-    # Keep the program running and check for snapshots at scheduled intervals
-    last_snapshot_check_time = None
-
-    while True:
-        schedule.run_pending()
-        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print(f"Current time: {current_time}")
-        logging.info(f"Snapshot check scheduled at {current_time}")
-    
-        if schedule.jobs:
-            last_snapshot_check_time = current_time
-            print("Main loop sleeping for 60 seconds...")
-            time.sleep(120)
-        else:
-            if last_snapshot_check_time:
-                print(f"Last snapshot check time: {last_snapshot_check_time}")
-                print("No scheduled tasks, sleeping for 60 seconds...")
-            else:
-                print("No snapshot check has run yet.")
-                time.sleep(120)
 
 
 

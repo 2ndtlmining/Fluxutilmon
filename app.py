@@ -161,19 +161,19 @@ def check_snapshot_age(json_file):
     snapshot_date = data.get("Snapshot")
     
     if snapshot_date:
-        snapshot_time = time.mktime(time.strptime(snapshot_date, "%Y-%m-%d_%H-%M-%S"))
-        current_time = time.time()
+        snapshot_datetime = datetime.datetime.strptime(snapshot_date, "%Y-%m-%d_%H-%M-%S")
+        current_datetime = datetime.datetime.now()
         print("Checking snapshot age...")
         logging.info("Checking snapshot age...")
-        print ("Snapshot date: %s, Current time: %s, Snapshot time: %s" % (snapshot_date, current_time, snapshot_time))
-        if current_time - snapshot_time > 720 * 60:
+        print("Snapshot date:", snapshot_datetime.strftime("%Y-%m-%d %H:%M:%S"), ", Current time:", current_datetime.strftime("%Y-%m-%d %H:%M:%S"))
+        time_difference = current_datetime - snapshot_datetime
+        if time_difference.total_seconds() > 720 * 60:
             print("Snapshot is older than 24 hours")
             logging.info("Snapshot is older than 24 hours")
             return True
         else:
             print("Last snapshot is still current no need to take snapshot")
             logging.info("Last snapshot is still current no need to take snapshot")
-
     return False
 
 def run_apidata():

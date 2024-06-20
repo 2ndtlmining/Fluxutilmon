@@ -234,11 +234,17 @@ def check_snapshots():
 # Check snapshots immediately
 check_snapshots()
 
+
+
 def run_scheduler():
+    global docker_df, dockertotal_df, utilization_df
     while True:
         print("Running scheduler...")
         logging.info("Running scheduler...")
         check_snapshots()
+        docker_df = generate_docker_dataframe()
+        dockertotal_df, fig = create_dataframe_and_figure()
+        utilization_df = generate_utilization_dataframe()
         time.sleep(60 * 60)  # Sleep for 1 hour
 
 scheduler_thread = ThreadPoolExecutor().submit(run_scheduler)
@@ -250,10 +256,10 @@ def main():
     logging.info("App started...")
 
 
-
 docker_df = generate_docker_dataframe()
 dockertotal_df, fig = create_dataframe_and_figure()
 utilization_df = generate_utilization_dataframe()
+
 
 # Define the layout of the app
 app.layout = html.Div([

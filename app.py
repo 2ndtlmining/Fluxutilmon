@@ -301,6 +301,9 @@ def update_util_chart(selected_metric):
         selected_metric = selected_metric[0]
     filtered_df = utilization_df[utilization_df['Metric'] == selected_metric]
     filtered_df = filtered_df.sort_values('Snapshot') # sort by Snapshot in ascending order
+    # Convert 'Snapshot' column to datetime and format it
+    filtered_df['Snapshot'] = pd.to_datetime(filtered_df['Snapshot']).dt.strftime('%Y-%m-%d')
+
     Utilfig = px.line(filtered_df, x='Snapshot', y='Value', markers=True, template='plotly_dark')
     Utilfig.update_layout(title=selected_metric, xaxis_title='Snapshot', yaxis_title=selected_metric)
     logging.info("Utilization chart updated")

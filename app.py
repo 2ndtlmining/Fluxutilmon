@@ -326,6 +326,7 @@ def update_line_chart(selected_docker_name):
     
     # Sort the filtered_df by 'Snapshot' in ascending order
     filtered_df = filtered_df.sort_values('Snapshot')
+    filtered_df['Snapshot'] = pd.to_datetime(filtered_df['Snapshot'], format='%Y-%m-%d_%H-%M-%S')
     
     # Create the line graph using Plotly
     fig = px.line(filtered_df, x='Snapshot', y='Quantity', markers=True, template='plotly_dark')

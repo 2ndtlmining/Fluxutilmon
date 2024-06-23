@@ -115,6 +115,7 @@ def create_dataframe_and_figure():
     logging.info("The docker dataframes process completed...")
 
     # Create the line graph using px.line
+    fig['Snapshot Date'] = pd.to_datetime(fig['Snapshot Date'], format='%Y-%m-%d_%H-%M-%S')
     fig = px.line(df, x='Snapshot Date', y='Total Docker Count', title='Total Docker Count Over Time')
 
     return df, fig
@@ -326,6 +327,8 @@ def update_line_chart(selected_docker_name):
     
     # Sort the filtered_df by 'Snapshot' in ascending order
     filtered_df = filtered_df.sort_values('Snapshot')
+
+    #Converrting Snapshot to date time
     filtered_df['Snapshot'] = pd.to_datetime(filtered_df['Snapshot'], format='%Y-%m-%d_%H-%M-%S')
     
     # Create the line graph using Plotly

@@ -118,7 +118,7 @@ def create_dataframe_and_figure():
     df['Snapshot Date'] = pd.to_datetime(df['Snapshot Date'], format='%Y-%m-%d_%H-%M-%S')
 
     # Create the line graph using px.line
-    fig = px.line(df, x='Snapshot Date', y='Total Docker Count', title='Total Docker Count Over Time')
+    fig = px.line(df, x='Snapshot Date', y='Total Docker Count', title='Total Docker Count Over Time', markers=True)
 
     return df, fig
 

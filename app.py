@@ -308,7 +308,7 @@ def update_util_chart(selected_metric):
     filtered_df['Snapshot'] = pd.to_datetime(filtered_df['Snapshot'], format='%Y-%m-%d_%H-%M-%S')
 
     Utilfig = px.line(filtered_df, x='Snapshot', y='Value', markers=True, template='plotly_dark')
-    Utilfig.update_layout(title=selected_metric, xaxis_title='Snapshot', yaxis_title=selected_metric)
+    Utilfig.update_layout(title=selected_metric, xaxis_title='Snapshot', yaxis_title=selected_metric, yaxis=dict(tickformat='.f'))
     logging.info("Utilization chart updated")
     return Utilfig
 

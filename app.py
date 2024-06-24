@@ -335,7 +335,7 @@ def update_line_chart(selected_docker_name):
     
     # Create the line graph using Plotly
     fig = px.line(filtered_df, x='Snapshot', y='Quantity', markers=True, template='plotly_dark')
-    fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity')
+    fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity', yaxis=dict(tickformat='.f'))
     logging.info("Line chart updated")
     return fig
 

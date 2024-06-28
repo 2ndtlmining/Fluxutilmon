@@ -225,6 +225,8 @@ def check_snapshots():
             logging.info("Run_DockerData.py completed, generating new docker dataframe")
             generate_docker_dataframe()  # Reload the docker dataframe
             logging.info("Docker dataframe reloaded")
+            create_dataframe_and_figure()
+            logging.info("Total Docker Count and Figure reloaded")
         else:
             print("Snapshot is not old enough, no new snapshot will be taken")
             logging.info("Snapshot is not old enough, no new snapshot will be taken")

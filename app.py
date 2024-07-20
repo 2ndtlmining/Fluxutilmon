@@ -351,6 +351,9 @@ def update_line_chart(n):
     # Update the docker_df with new data (e.g., docker_df = generate_docker_dataframe())
     # Replace this with your actual data update logic
     
+     # Convert the Snapshot Date column to a datetime object
+    docker_df['Snapshot Date'] = pd.to_datetime(docker_df['Snapshot Date'], format='%Y-%m-%d_%H-%M-%S')
+
     # Create the line chart figure
     fig = px.line(docker_df, x='Snapshot Date', y='Total Docker Count', markers=True, template='plotly_dark')
     fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot Date', yaxis_title='Total Docker Count', yaxis=dict(tickformat='.0f'))

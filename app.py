@@ -292,6 +292,7 @@ app.layout = html.Div([
     ]),
     dcc.Graph(id='line-chart'),
     dcc.Graph(id='DockerTotalGraph', figure=fig),
+    dcc.Interval(id='interval', interval=60 * 60 * 1000, n_intervals=0),
     dcc.Graph(id='UtilGraph')
 ])
  
@@ -339,6 +340,21 @@ def update_line_chart(selected_docker_name):
     fig = px.line(filtered_df, x='Snapshot', y='Quantity', markers=True, template='plotly_dark')
     fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity', yaxis=dict(tickformat='.0f'))
     logging.info("Line chart updated")
+    return fig
+
+# Callback function to update the line chart
+@app.callback(
+    Output('DockerTotalGraph', 'figure'),
+    [Input('interval', 'n_intervals')]
+)
+def update_line_chart(n):
+    # Update the docker_df with new data (e.g., docker_df = generate_docker_dataframe())
+    # Replace this with your actual data update logic
+    
+    # Create the line chart figure
+    fig = px.line(docker_df, x='Snapshot Date', y='Total Docker Count', markers=True, template='plotly_dark')
+    fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity', yaxis=dict(tickformat='.0f'))
+    
     return fig
 
 

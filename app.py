@@ -353,7 +353,7 @@ def update_line_chart(n):
     
     # Create the line chart figure
     fig = px.line(docker_df, x='Snapshot Date', y='Total Docker Count', markers=True, template='plotly_dark')
-    fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot', yaxis_title='Quantity', yaxis=dict(tickformat='.0f'))
+    fig.update_layout(title='Docker Container Count', xaxis_title='Snapshot Date', yaxis_title='Total Docker Count', yaxis=dict(tickformat='.0f'))
     
     return fig
 
